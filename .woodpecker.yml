@@ -22,7 +22,7 @@ pipeline:
       - printf "$${SSH_CONFIG}" > ~/.ssh/config
       - chmod -R u=rwX,go= ~/.ssh
       - rsync -atv --delete --progress ./docker_compose.yml ci:$${COMPOSE_FILE}
-      - ssh ci docker --config ~/.docker/powermonitoring pull powermonitoring/backend
+      - ssh ci deploy/pull.sh
       - ssh ci docker compose -f "$${COMPOSE_FILE}" up shortener -d --force-recreate --remove-orphans
     when:
       status: [ success ]
