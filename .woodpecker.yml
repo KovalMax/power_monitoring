@@ -9,7 +9,7 @@ pipeline:
       platforms: linux/amd64
       auto_tag: true
     when:
-      branch: master
+      branch: main
       event: push
 
   deploy:
@@ -27,5 +27,5 @@ pipeline:
     when:
       status: [ success ]
       branch:
-        include: [ master ]
+        include: [ main ]
       event: [ push, deployment ]
