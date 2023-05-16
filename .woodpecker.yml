@@ -16,7 +16,7 @@ pipeline:
     image: alpine
     secrets: [ DEPLOY_KEY, SSH_CONFIG, COMPOSE_FILE ]
     commands:
-      - apk add openssh
+      - apk add openssh rsync
       - mkdir ~/.ssh
       - printf '%s\n' "$${DEPLOY_KEY}" > ~/.ssh/deploy_key
       - printf "$${SSH_CONFIG}" > ~/.ssh/config
