@@ -1,12 +1,5 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-
-
-
-class TrackRequest(BaseModel):
-    deviceId: str
-    powerState: int
-
+from app.model.request.track_request import TrackRequest
 
 app = FastAPI()
 
