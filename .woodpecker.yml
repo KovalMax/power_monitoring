@@ -1,0 +1,31 @@
+pipeline:
+  publish-prod-buildx:
+    image: woodpeckerci/plugin-docker-buildx
+    group: docker
+    secrets: [ docker_username, docker_password ]
+    settings:
+      repo: powermonitoring/backend
+      dockerfile: Dockerfile
+      platforms: linux/amd64
+      auto_tag: true
+    when:
+      branch: master
+      event: push
+
+  deploy:
+    image: alpine
+    secrets: [ DEPLOY_KEY, SSH_CONFIG, COMPOSE_FILE ]
+    commands:
+      - apk add openssh
+      - mkdir ~/.ssh
+      - printf '%s\n' "$${DEPLOY_KEY}" > ~/.ssh/deploy_key
+      - printf "$${SSH_CONFIG}" > ~/.ssh/config
+      - chmod -R u=rwX,go= ~/.ssh
+      - rsync -atv --delete --progress ./docker-compose.yml ci:$${COMPOSE_FILE}
+      - docker --config ~/.docker/powermonitoring pull powermonitoring/backend
+      - ssh ci docker compose -f "$${COMPOSE_FILE}" up shortener -d --force-recreate --remove-orphans
+    when:
+      status: [ success ]
+      branch:
+        include: [ master ]
+      event: [ push, deployment ]

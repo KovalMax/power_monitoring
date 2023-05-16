@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  power_api:
+    container_name: power_api
+    image: powermonitoring/backend
+    restart: unless-stopped
+    networks:
+      - cloud_net
+      - app_net
+
+
+networks:
+  cloud_net:
+    external: true
+  app_net:
+    driver: bridge
