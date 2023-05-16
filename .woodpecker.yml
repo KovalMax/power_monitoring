@@ -23,7 +23,7 @@ pipeline:
       - chmod -R u=rwX,go= ~/.ssh
       - rsync -atv --delete --progress ./docker_compose.yml ci:$${COMPOSE_FILE}
       - ssh ci deploy/pull.sh
-      - ssh ci docker compose -f "$${COMPOSE_FILE}" up -d --force-recreate --remove-orphans
+      - ssh ci docker compose -f "$${COMPOSE_FILE}" up -d
     when:
       status: [ success ]
       branch:
