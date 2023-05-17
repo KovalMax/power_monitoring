@@ -13,7 +13,7 @@ services:
     env_file:
       - .env_power
     volumes:
-      - ${HOME}/storage/rabbit:/bitnami/rabbitmq/mnesia:rw
+      - ${HOME}/storage/rabbit:/var/lib/rabbitmq:rw
 
   power_api:
     container_name: power_api
