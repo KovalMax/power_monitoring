@@ -28,7 +28,7 @@ services:
   power_worker:
     container_name: power_worker
     image: powermonitoring/backend
-    command: ['dramatiq', 'app/queue']
+    command: ['dramatiq', 'app.queue']
     restart: unless-stopped
     env_file:
       - .env_power
