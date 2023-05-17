@@ -10,6 +10,6 @@ dramatiq.set_broker(rabbitmq_broker)
 
 
 @dramatiq.actor
-def power_state_update(event: dict):
-    event = PowerStateUpdateEvent.parse_obj(event)
+def power_state_update(raw_json_event: str):
+    event = PowerStateUpdateEvent.parse_raw(raw_json_event)
     print(event)
