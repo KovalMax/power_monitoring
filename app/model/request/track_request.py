@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 
+from app.model.enum.power_state import PowerStateEnum
+
 
 class TrackRequest(BaseModel):
-    deviceId: str
-    powerState: int
+    device_id: str
+    power_state: PowerStateEnum

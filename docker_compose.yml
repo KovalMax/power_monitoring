@@ -1,11 +1,38 @@
 version: '3.9'
 services:
+  rabbit_broker:
+    container_name: rabbit_broker
+    hostname: rabbit_broker
+    image: rabbitmq:management-alpine
+    restart: unless-stopped
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    networks:
+      - app_net
+    env_file:
+      - .env_power
+    volumes:
+      - ${HOME}/storage/rabbit:/bitnami/rabbitmq/mnesia:rw
+
   power_api:
     container_name: power_api
     image: powermonitoring/backend
     restart: unless-stopped
+    env_file:
+      - .env_power
     networks:
       - cloud_net
+      - app_net
+
+  power_worker:
+    container_name: power_worker
+    image: powermonitoring/backend
+    command: ['dramatiq', 'app/queue']
+    restart: unless-stopped
+    env_file:
+      - .env_power
+    networks:
       - app_net
 
 
