@@ -12,6 +12,7 @@ app = FastAPI()
 
 @app.post("/api/power/state", status_code=status.HTTP_201_CREATED)
 async def track_api(req: TrackRequest):
-    power_state_update.send(PowerStateUpdateEvent(req.device_id, req.power_state, datetime.now()))
+    power_state_update.send(
+        PowerStateUpdateEvent(device_id=req.device_id, state=req.power_state, fired_at=datetime.now()))
 
     return {}
