@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from pydantic import BaseModel
 
@@ -9,3 +9,8 @@ class PowerStateUpdateEvent(BaseModel):
     device_id: str
     state: PowerStateEnum
     fired_at: datetime
+
+    class Config:
+        json_encoders = {
+            datetime: lambda v: v.timestamp()
+        }
