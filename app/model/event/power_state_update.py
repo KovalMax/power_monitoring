@@ -1,5 +1,9 @@
-from app.model.request.track_request import TrackRequest
+from dataclasses import dataclass
+from app.model.enum.power_state import PowerStateEnum
 
 
-class PowerStateUpdateEvent(TrackRequest):
-    pass
+@dataclass
+class PowerStateUpdateEvent:
+    device_id: str
+    power_state: PowerStateEnum
+    fired_at: float
