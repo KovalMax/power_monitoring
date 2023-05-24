@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from app.model.enum.power_state import PowerStateEnum
 
 
@@ -6,4 +7,5 @@ from app.model.enum.power_state import PowerStateEnum
 class PowerStateUpdateEvent:
     device_id: str
     power_state: PowerStateEnum
+    battery_level: float
     fired_at: float
