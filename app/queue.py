@@ -1,6 +1,4 @@
-from datetime import datetime
 from os import environ
-from typing import Union
 
 import dramatiq
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
@@ -12,7 +10,7 @@ dramatiq.set_broker(rabbitmq_broker)
 
 
 @dramatiq.actor
-def power_state_update(update_event: dict[str, Union[str, float]]):
+def power_state_update(update_event: dict[str, str | float]):
     e = PowerStateUpdateEvent(**update_event)
     print(e)
 
