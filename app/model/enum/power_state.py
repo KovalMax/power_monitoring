@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class PowerStateEnum(int, Enum):
-    power_on = 2
-    power_off = 3
+    power_on = 1
+    power_off = 2
