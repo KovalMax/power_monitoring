@@ -21,9 +21,9 @@ pipeline:
       - printf '%s\n' "$${DEPLOY_KEY}" > ~/.ssh/deploy_key
       - printf "$${SSH_CONFIG}" > ~/.ssh/config
       - chmod -R u=rwX,go= ~/.ssh
-      - rsync -atv --delete --progress ./docker_compose.yml ci:$${COMPOSE_FILE}
+      - rsync -atv --delete --progress ./$${COMPOSE_FILE} ci:$${COMPOSE_FILE}
       - ssh ci deploy/pull.sh
-      - ssh ci docker compose -p "$${COMPOSE_PROJECT}" -f "$${COMPOSE_FILE}" up -d
+      - ssh ci docker compose -p "$${COMPOSE_PROJECT}" up -d
     when:
       status: [ success ]
       branch:
