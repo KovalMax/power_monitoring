@@ -14,7 +14,7 @@ pipeline:
 
   deploy:
     image: alpine
-    secrets: [ DEPLOY_KEY, SSH_CONFIG, COMPOSE_FILE ]
+    secrets: [ DEPLOY_KEY, SSH_CONFIG, COMPOSE_FILE, COMPOSE_PROJECT]
     commands:
       - apk add openssh rsync
       - mkdir ~/.ssh
