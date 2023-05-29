@@ -8,32 +8,34 @@ services:
     ports:
       - "5673:5672"
       - "15673:15672"
-    networks:
-      - app_net
-    env_file:
-      - .env_power
-    volumes:
-      - ${HOME}/storage/rabbit:/var/lib/rabbitmq:rw
+    networks: ["app_net"]
+    env_file: [".env_power"]
+    volumes: ["${HOME}/storage/rabbit:/var/lib/rabbitmq:rw"]
+
+  redis_cache:
+    container_name: redis_cache
+    image: redis:7.0-bullseye
+    user: "${DOCKER_USER}"
+    restart: unless-stopped
+    networks: ["app_net"]
+    volumes: ["${HOME}/storage/redis:/data:rw"]
 
   power_api:
     container_name: power_api
     image: powermonitoring/backend
     restart: unless-stopped
-    env_file:
-      - .env_power
-    networks:
-      - cloud_net
-      - app_net
+    env_file: [".env_power"]
+    networks: ["cloud_net", "app_net"]
+    volumes: ["${HOME}/storage/firebase:/app/storage"]
 
   power_worker:
     container_name: power_worker
     image: powermonitoring/backend
-    command: ['dramatiq', 'app.queue']
+    command: ['dramatiq', 'app.queue.worker']
     restart: unless-stopped
-    env_file:
-      - .env_power
-    networks:
-      - app_net
+    env_file: [".env_power"]
+    networks: ["app_net"]
+    volumes: ["${HOME}/storage/firebase:/app/storage"]
 
 
 networks:

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from app.model.enum.power_state import PowerStateEnum
 
 
-class TrackRequest(BaseModel):
+class CreateStateEventRequest(BaseModel):
     device_id: str
     power_state: PowerStateEnum
     battery_level: float
