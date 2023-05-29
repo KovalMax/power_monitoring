@@ -1,7 +1,11 @@
+import operator
 from os import environ
 
 import firebase_admin
 from firebase_admin import credentials, firestore
+from google.cloud.firestore_v1 import FieldFilter
+from google.cloud.firestore_v1.types import StructuredQuery
+
 from app.redis.redis_client import get_key, set_key
 
 cred = credentials.Certificate(environ.get('FIREBASE_KEY'))
@@ -13,7 +17,8 @@ def device_exists(device_id: str) -> bool:
     if get_key(device_id):
         return True
 
-    query = db.collection('Devices').where('device_id', '==', device_id).limit(1)
+    device_filter = FieldFilter('device_id', StructuredQuery.FieldFilter.Operator.EQUAL, device_id)
+    query = db.collection('Devices').where(filter=device_filter).limit(1)
     snapshot = query.stream()
 
     exists = sum(1 for _ in snapshot) > 0
