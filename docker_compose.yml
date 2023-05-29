@@ -4,6 +4,7 @@ services:
     container_name: rabbit_broker
     hostname: rabbit_broker
     image: rabbitmq:management-alpine
+    user: "${DOCKER_USER}"
     restart: unless-stopped
     ports:
       - "5673:5672"

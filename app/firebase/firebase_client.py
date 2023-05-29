@@ -17,7 +17,7 @@ def device_exists(device_id: str) -> bool:
     if get_key(device_id):
         return True
 
-    device_filter = FieldFilter('device_id', StructuredQuery.FieldFilter.Operator.EQUAL, device_id)
+    device_filter = FieldFilter('device_id', StructuredQuery.FieldFilter.Operator.EQUAL.value, device_id)
     query = db.collection('Devices').where(filter=device_filter).limit(1)
     snapshot = query.stream()
 
