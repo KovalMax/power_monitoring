@@ -15,8 +15,8 @@ def device_exists(device_id: str) -> bool:
 
     query = db.collection('Devices').where('device_id', '==', device_id).limit(1)
     snapshot = query.stream()
-    exists = len(snapshot) > 0
 
+    exists = sum(1 for _ in snapshot) > 0
     if exists:
         set_key(device_id, True)
 
