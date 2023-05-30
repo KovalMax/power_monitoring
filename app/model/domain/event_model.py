@@ -1,10 +1,12 @@
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
+
+from app.model.enum.power_state import PowerStateEnum
 
 
 @dataclass
 class EventModel:
     device_id: str
-    power_state: int
+    power_state: PowerStateEnum
     battery_level: float
     network_level: int
     created_at: int

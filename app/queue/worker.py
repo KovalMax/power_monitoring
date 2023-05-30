@@ -17,7 +17,5 @@ def power_state_update(update_event: dict[str, str | float]):
     if not device_exists(e.device_id):
         return
 
-    print(e)
-
     create_new_event(EventModel(device_id=e.device_id, power_state=e.power_state, network_level=e.network_level,
                                 battery_level=e.battery_level, created_at=e.fired_at, updated_at=e.fired_at))
