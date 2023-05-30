@@ -25,6 +25,7 @@ services:
     env_file: [".env_power"]
     networks: ["cloud_net", "app_net"]
     volumes: ["${HOME}/storage/firebase:/app/storage"]
+    depends_on: ["rabbit_broker"]
 
   power_worker:
     container_name: power_worker
@@ -34,6 +35,7 @@ services:
     env_file: [".env_power"]
     networks: ["app_net"]
     volumes: ["${HOME}/storage/firebase:/app/storage"]
+    depends_on: ["rabbit_broker"]
 
 
 networks:

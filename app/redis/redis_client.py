@@ -9,5 +9,5 @@ def get_device(device_id: str) -> bool | None:
     return redis.get(f'devices:${device_id}')
 
 
-def set_new_device(device_id: str, value: bool = True):
+def set_new_device(device_id: str, value: int = 1) -> None:
     return redis.set(f'devices:${device_id}', value)
