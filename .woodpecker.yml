@@ -14,16 +14,16 @@ pipeline:
 
   deploy:
     image: alpine
-    secrets: [ DEPLOY_KEY, SSH_CONFIG, COMPOSE_FILE, COMPOSE_PROJECT]
+    secrets: [ DEPLOY_KEY, SSH_CONFIG, COMPOSE_FILE_PATH, COMPOSE_PROJECT]
     commands:
       - apk add openssh rsync
       - mkdir ~/.ssh
       - printf '%s\n' "$${DEPLOY_KEY}" > ~/.ssh/deploy_key
       - printf "$${SSH_CONFIG}" > ~/.ssh/config
       - chmod -R u=rwX,go= ~/.ssh
-      - rsync -atv --delete --progress ./$${COMPOSE_FILE} ci:$${COMPOSE_FILE}
+      - rsync -atv --progress ./compose.yaml ci:$${COMPOSE_FILE_PATH}
       - ssh ci deploy/pull.sh
-      - ssh ci docker compose -p "$${COMPOSE_PROJECT}" up -d
+      - ssh ci docker compose -p "$${COMPOSE_PROJECT}" -f "$${COMPOSE_FILE_PATH}" up -d
     when:
       status: [ success ]
       branch:

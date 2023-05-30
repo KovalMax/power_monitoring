@@ -6,9 +6,6 @@ services:
     image: rabbitmq:management-alpine
     user: "${DOCKER_USER}"
     restart: unless-stopped
-    ports:
-      - "5673:5672"
-      - "15673:15672"
     networks: ["app_net"]
     env_file: [".env_power"]
     volumes: ["${HOME}/storage/rabbit:/var/lib/rabbitmq:rw"]

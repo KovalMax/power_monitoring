@@ -1,11 +1,11 @@
-import operator
+import uuid
 from os import environ
 
 import firebase_admin
 from firebase_admin import credentials, firestore
 from google.cloud.firestore_v1 import FieldFilter
-from google.cloud.firestore_v1.types import StructuredQuery
 
+from app.model.domain.event_model import EventModel
 from app.redis.redis_client import get_device, set_new_device
 
 cred = credentials.Certificate(environ.get('FIREBASE_KEY'))
@@ -26,3 +26,7 @@ def device_exists(device_id: str) -> bool:
         set_new_device(device_id)
 
     return exists
+
+
+def create_new_event(event: EventModel) -> None:
+    db.collection('Events').document(str(uuid.uuid4())).set(event.to_dict())

@@ -3,8 +3,9 @@ from os import environ
 import dramatiq
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
 
+from app.firebase.firebase_client import device_exists, create_new_event
+from app.model.domain.event_model import EventModel
 from app.model.event.power_state_update import PowerStateUpdateEvent
-from app.firebase.firebase_client import device_exists
 
 rabbitmq_broker = RabbitmqBroker(url=environ.get("BROKER_HOST"))
 dramatiq.set_broker(rabbitmq_broker)
@@ -16,10 +17,5 @@ def power_state_update(update_event: dict[str, str | float]):
     if not device_exists(e.device_id):
         return
 
-    print(e)
-
-
-
-
-
-
+    create_new_event(EventModel(device_id=e.device_id, power_state=e.power_state.value, network_level=e.network_level,
+                                battery_level=e.battery_level, created_at=e.fired_at, updated_at=e.fired_at))
