@@ -1,6 +1,6 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class PowerStateEnum(Enum):
+class PowerStateEnum(IntEnum):
     POWER_ON = 1
     POWER_OFF = 2
