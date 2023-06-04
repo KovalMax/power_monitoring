@@ -1,6 +1,6 @@
 from os import environ
 
-from fastapi import Depends
+from dramatiq.brokers.rabbitmq import RabbitmqBroker
 
 from app.firebase.firebase_client import FireBaseClient
 from app.redis.redis_client import RedisClient
@@ -16,12 +16,16 @@ def get_firebase_client() -> FireBaseClient:
     return FireBaseClient(environ.get("FIREBASE_KEY"))
 
 
-def get_event_service(redis_client: RedisClient = Depends(get_redis_client),
-                      firebase_client: FireBaseClient = Depends(get_firebase_client)) -> EventService:
+def get_rabbitmq() -> RabbitmqBroker:
+    return RabbitmqBroker(url=environ.get("BROKER_HOST"))
+
+
+def get_event_service(redis_client: RedisClient = get_redis_client(),
+                      firebase_client: FireBaseClient = get_firebase_client()) -> EventService:
     return EventService(redis_client, firebase_client)
 
 
-def get_device_service(redis_client: RedisClient = Depends(get_redis_client),
-                       firebase_client: FireBaseClient = Depends(get_firebase_client)) -> DeviceService:
+def get_device_service(redis_client: RedisClient = get_redis_client(),
+                       firebase_client: FireBaseClient = get_firebase_client()) -> DeviceService:
     return DeviceService(redis_client, firebase_client)
 
