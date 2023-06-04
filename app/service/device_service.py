@@ -12,7 +12,7 @@ class DeviceService:
         self.firebase_client = firebase_client
 
     def device_exists(self, device_id: str) -> bool:
-        cache_key = self.get_key(device_id)
+        cache_key = self.__get_key(device_id)
         if self.redis_client.get(cache_key):
             return True
 
@@ -26,5 +26,5 @@ class DeviceService:
 
         return exists
 
-    def get_key(self, key_value: str) -> str:
+    def __get_key(self, key_value: str) -> str:
         return f'${self.DEVICE_CACHE_PREFIX}:${key_value}'
