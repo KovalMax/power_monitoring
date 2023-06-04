@@ -4,8 +4,8 @@ import redis
 
 
 class RedisClient:
-    def __init__(self, host: str, port: str, db: str):
-        self.redis = redis.Redis(host=host, port=port, db=db)
+    def __init__(self, client: redis.Redis):
+        self.redis = client
 
     def get(self, key: str) -> Any | None:
         return self.redis.get(key)
