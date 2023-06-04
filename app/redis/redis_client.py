@@ -1,13 +1,14 @@
-from os import environ
+from typing import Any
 
 import redis
 
-redis = redis.Redis(host=environ.get("REDIS_HOST"), port=environ.get("REDIS_PORT"), db=environ.get("REDIS_INDEX"))
 
+class RedisClient:
+    def __init__(self, host: str, port: str, db: str):
+        self.redis = redis.Redis(host=host, port=port, db=db)
 
-def get_device(device_id: str) -> bool | None:
-    return redis.get(f'devices:${device_id}')
+    def get(self, key: str) -> Any | None:
+        return self.redis.get(key)
 
-
-def set_new_device(device_id: str, value: int = 1) -> None:
-    return redis.set(f'devices:${device_id}', value)
+    def set(self, key: str, value: Any):
+        return self.redis.set(key, value)
