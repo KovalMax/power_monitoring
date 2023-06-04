@@ -1,3 +1,4 @@
+from functools import lru_cache
 from os import environ
 
 from dramatiq.brokers.rabbitmq import RabbitmqBroker
@@ -8,14 +9,17 @@ from app.service.device_service import DeviceService
 from app.service.event_service import EventService
 
 
+@lru_cache(typed=True)
 def get_redis_client() -> RedisClient:
     return RedisClient(environ.get("REDIS_HOST"), environ.get("REDIS_PORT"), environ.get("REDIS_INDEX"))
 
 
+@lru_cache(typed=True)
 def get_firebase_client() -> FireBaseClient:
     return FireBaseClient(environ.get("FIREBASE_KEY"))
 
 
+@lru_cache(typed=True)
 def get_rabbitmq() -> RabbitmqBroker:
     return RabbitmqBroker(url=environ.get("BROKER_HOST"))
 
