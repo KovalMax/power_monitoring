@@ -11,17 +11,14 @@ from app.queue.worker import power_state_update
 router = APIRouter(
     prefix="/api",
     tags=["events"],
-    responses={404: {"description": "Not found"}, 201: {"description": "Created"}},
+    responses={403: {"description": "Forbidden"}, 201: {"description": "Created"}},
 )
 
 
 @router.post("/events", status_code=status.HTTP_201_CREATED)
 async def create_state_event(req: CreateStateEventRequest, user_agent: Annotated[str | None, Header()] = None):
     if user_agent != environ.get("DEVICE_AGENT"):
-        raise HTTPException(status_code=404, detail="Not found")
-
-    if not req.fired_at:
-        req.fired_at = datetime.utcnow().timestamp()
+        raise HTTPException(status_code=403, detail="Forbidden")
 
     power_state_update.send(req.dict())
 
