@@ -9,10 +9,12 @@ from app.service.event_service import EventService
 rabbitmq_broker = get_rabbitmq()
 dramatiq.set_broker(rabbitmq_broker)
 
+event_service: EventService = get_event_service()
+device_service: DeviceService = get_device_service()
+
 
 @dramatiq.actor
-def power_state_update(update_event: dict[str, str | float], event_service: EventService = get_event_service(),
-                       device_service: DeviceService = get_device_service()):
+def power_state_update(update_event: dict[str, str | float]):
     e = PowerStateUpdateEvent(**update_event)
     if not device_service.device_exists(e.device_id):
         return
