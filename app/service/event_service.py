@@ -1,3 +1,4 @@
+import logging
 import uuid
 
 from app.firebase.firebase_client import FireBaseClient
@@ -7,11 +8,15 @@ from app.redis.redis_client import RedisClient
 
 
 class EventService:
+    COLLECTION_NAME = 'Events'
+    POWER_STATE_CACHE_KEY = 'events:state'
+
     def __init__(self, redis_client: RedisClient, firebase_client: FireBaseClient):
         self.redis_client = redis_client
         self.firebase_client = firebase_client
 
     def create_new_event(self, event: PowerStateUpdateEvent) -> None:
+        logging.Logger.info('Creating new event', None)
         try:
             model = EventModel(device_id=event.device_id,
                                power_state=event.power_state,
@@ -19,6 +24,8 @@ class EventService:
                                battery_level=event.battery_level,
                                created_at=event.fired_at,
                                updated_at=event.fired_at)
-            self.firebase_client.client.collection('Events').document(str(uuid.uuid4())).set(model.to_dict())
+
+            collection = self.firebase_client.client.collection(self.COLLECTION_NAME)
+            collection.document(str(uuid.uuid4())).set(model.to_dict())
         except Exception as e:
-            print(e)
+            logging.Logger.exception(str(e), **event.__dict__)
