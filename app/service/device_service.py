@@ -15,7 +15,9 @@ class DeviceService:
 
     def device_exists(self, device_id: str) -> bool:
         cache_key = self.__get_key(device_id)
-        if self.redis_client.get(cache_key):
+        redis_entry = self.redis_client.get(cache_key)
+        print(redis_entry)
+        if redis_entry is not None:
             return True
 
         device_filter = FieldFilter(self.DEVICE_ID_FIELD, '==', device_id)
