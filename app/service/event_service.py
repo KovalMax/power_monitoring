@@ -16,7 +16,7 @@ class EventService:
         self.firebase_client = firebase_client
 
     def create_new_event(self, event: PowerStateUpdateEvent) -> None:
-        logging.Logger.info('Creating new event', None)
+        logging.info('Creating new event')
         try:
             model = EventModel(device_id=event.device_id,
                                power_state=event.power_state,
@@ -28,4 +28,4 @@ class EventService:
             collection = self.firebase_client.client.collection(self.COLLECTION_NAME)
             collection.document(str(uuid.uuid4())).set(model.to_dict())
         except Exception as e:
-            logging.Logger.exception(str(e), **event.__dict__)
+            logging.exception(str(e))
