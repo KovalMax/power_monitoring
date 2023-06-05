@@ -6,6 +6,8 @@ from app.redis.redis_client import RedisClient
 
 class DeviceService:
     DEVICE_CACHE_PREFIX = 'app:devices'
+    COLLECTION_NAME = 'Devices'
+    DEVICE_ID_FIELD = 'device_id'
 
     def __init__(self, redis_client: RedisClient, firebase_client: FireBaseClient):
         self.redis_client = redis_client
@@ -16,10 +18,10 @@ class DeviceService:
         if self.redis_client.get(cache_key):
             return True
 
-        device_filter = FieldFilter('device_id', '==', device_id)
-        query = self.firebase_client.client.collection('Devices').where(filter=device_filter).limit(1)
+        device_filter = FieldFilter(self.DEVICE_ID_FIELD, '==', device_id)
+        query = self.firebase_client.client.collection(self.COLLECTION_NAME).where(filter=device_filter).limit(1)
         snapshot = query.get()
-
+        print(snapshot)
         exists = sum(1 for _ in snapshot) > 0
         if exists:
             self.redis_client.set(cache_key, 1)

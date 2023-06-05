@@ -15,6 +15,7 @@ device_service: DeviceService = get_device_service()
 @dramatiq.actor
 def power_state_update(update_event: dict[str, str | float]):
     event_model = PowerStateUpdateEvent(**update_event)
+    print(event_model)
     if not device_service.device_exists(event_model.device_id):
         return
 
