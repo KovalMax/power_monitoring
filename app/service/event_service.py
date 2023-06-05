@@ -26,6 +26,7 @@ class EventService:
                                updated_at=event.fired_at)
 
             collection = self.firebase_client.client.collection(self.COLLECTION_NAME)
-            collection.document(str(uuid.uuid4())).set(model.to_dict())
+            result = collection.document(str(uuid.uuid4())).set(model.to_dict())
+            logging.info(str(result))
         except Exception as e:
             logging.exception(str(e))
