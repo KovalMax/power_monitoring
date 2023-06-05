@@ -10,8 +10,4 @@ class CreateStateEventRequest(BaseModel):
     power_state: PowerStateEnum
     battery_level: float
     network_level: int
-    fired_at: float | None
-
-    @validator('fired_at')
-    def set_fired_at(cls, value):
-        return datetime.utcnow().timestamp() if value is None else value
+    fired_at: float | None = datetime.utcnow().timestamp()
