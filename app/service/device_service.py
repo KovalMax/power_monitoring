@@ -7,7 +7,7 @@ from app.redis.redis_client import RedisClient
 class DeviceService:
     DEVICE_CACHE_PREFIX = 'app:devices'
     COLLECTION_NAME = 'Devices'
-    DEVICE_ID_FIELD = 'device_id'
+    DEVICE_ID_FIELD = 'deviceId'
 
     def __init__(self, redis_client: RedisClient, firebase_client: FireBaseClient):
         self.redis_client = redis_client
