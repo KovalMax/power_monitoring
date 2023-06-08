@@ -10,7 +10,6 @@ class EventModel:
     battery_level: float
     network_level: int
     created_at: int
-    updated_at: int
 
     def __post_init__(self):
         if self.device_id is None or len(self.device_id) <= 0:
@@ -28,11 +27,14 @@ class EventModel:
         if self.created_at is None or self.created_at <= 0:
             raise ValueError('created_at: can not be empty')
 
-        if self.updated_at is None or self.updated_at <= 0:
-            raise ValueError('updated_at: can not be empty')
-
         if not isinstance(self.power_state, PowerStateEnum):
             self.power_state = PowerStateEnum(self.power_state)
 
     def to_dict(self):
-        return self.__dict__.copy()
+        return {
+            'deviceId': self.device_id,
+            'powerState': self.power_state,
+            'batteryLevel': self.battery_level,
+            'networkLevel': self.network_level,
+            'createdAt': self.created_at,
+        }

@@ -14,20 +14,19 @@ class DeviceService:
         self.firebase_client = firebase_client
 
     def device_exists(self, device_id: str) -> bool:
-        cache_key = self.__get_key(device_id)
-        redis_entry = self.redis_client.get(cache_key)
-        if redis_entry is not None:
-            return True
+        # cache_key = self.__get_key(device_id)
+        # redis_entry = self.redis_client.get(cache_key)
+        # if redis_entry is not None:
+        #     return True
 
         device_filter = FieldFilter(self.DEVICE_ID_FIELD, '==', device_id)
         query = self.firebase_client.client.collection(self.COLLECTION_NAME).where(filter=device_filter).limit(1)
         snapshot = query.get()
 
-        exists = sum(1 for _ in snapshot) > 0
-        if exists:
-            self.redis_client.set(cache_key, 1)
+        for device in snapshot:
+            print(device)
 
-        return exists
+        return True
 
     def __get_key(self, key_value: str) -> str:
         return f'{self.DEVICE_CACHE_PREFIX}:{key_value}'
