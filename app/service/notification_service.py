@@ -27,9 +27,13 @@ class NotificationService:
             return
 
         if int(state_entry) != model.power_state.value:
+            self.redis_client.set(state_key, model.power_state.value)
             settings = self.firebase_client.client\
                 .collection(self.SETTINGS_COLLECTION)\
                 .document(device.user_id).get().to_dict()
+
+            if not settings['useTelegram']:
+                return
 
             if model.power_state is PowerStateEnum.POWER_ON:
                 self.send_telegram_message(

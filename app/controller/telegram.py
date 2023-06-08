@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, HTTPException, Body
+from fastapi import APIRouter, Body
 from starlette import status
 
 from app.dependencies.dependecies import get_notification_service
@@ -20,6 +20,6 @@ async def create_state_event(payload: dict = Body()):
     chat_id = payload['message']['chat']['id']
 
     notification_service.save_chat_settings(user_id, chat_id)
-    notification_service.send_telegram_message(chat_id, 'Сповіщення для телеграму налаштовано! U+2705')
+    notification_service.send_telegram_message(chat_id, 'Сповіщення для телеграму налаштовано!')
 
     return {}
