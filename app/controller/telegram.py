@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 
-@router.post("/telegram", status_code=status.HTTP_201_CREATED)
+@router.post("/telegram", status_code=status.HTTP_200_OK)
 async def create_state_event(request: Request, user_agent: Annotated[str | None, Header()] = None):
     print(request.body())
     print(user_agent)
