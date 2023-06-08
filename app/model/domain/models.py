@@ -43,7 +43,7 @@ class EventModel:
 @dataclass
 class DeviceModel:
     id: str
-    active: bool
+    active: int
     user_id: str
     device_id: str
 

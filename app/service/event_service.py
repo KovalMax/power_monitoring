@@ -16,7 +16,7 @@ class EventService:
         self.redis_client = redis_client
         self.firebase_client = firebase_client
 
-    def create_new_event(self, event: PowerStateUpdateEvent) -> None:
+    def create_new_event(self, device_reference: str, event: PowerStateUpdateEvent) -> None:
         try:
             model = EventModel(device_id=event.device_id,
                                power_state=event.power_state,
@@ -24,8 +24,8 @@ class EventService:
                                battery_level=event.battery_level,
                                created_at=event.fired_at)
 
-            collection = self.firebase_client.client.collection(self.EVENT_COLLECTION)
-            collection.document(str(uuid.uuid4())).set(model.to_dict())
+            device = self.firebase_client.client.collection(self.DEVICE_COLLECTION).document(device_reference)
+            device.collection(self.EVENT_COLLECTION).add(model.to_dict(), str(uuid.uuid4()))
 
             state_key = self.__get_key(model.device_id)
             state_entry = self.redis_client.get(state_key)

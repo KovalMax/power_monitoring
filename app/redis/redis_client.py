@@ -17,4 +17,4 @@ class RedisClient:
         return self.redis.hgetall(key)
 
     def hset(self, key: str, value: dict):
-        return self.redis.hset(key, mapping=value)
+        return self.redis.hset(name=key, mapping=value)

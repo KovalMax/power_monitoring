@@ -22,7 +22,8 @@ def power_state_update(update_event: dict[str, str | float]):
         logging.exception(str(e))
         return
 
-    if not device_service.device_exists(event_model.device_id):
+    device = device_service.device_exists(event_model.device_id)
+    if device is None:
         return
 
-    event_service.create_new_event(event_model)
+    event_service.create_new_event(device.id, event_model)
