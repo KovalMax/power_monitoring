@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, Request, HTTPException, Body
 from starlette import status
 
 from app.dependencies.dependecies import get_notification_service
@@ -13,9 +13,11 @@ notification_service = get_notification_service()
 
 
 @router.post("/telegram", status_code=status.HTTP_200_OK)
-async def create_state_event(request: Request):
-    json = await request.json()
-    print(json)
+async def create_state_event(payload: dict = Body()):
+    print(type(payload))
+    print(payload)
+
+    return {}
 
     user_id = json['text'].split(' ')[1]
     chat_id = json['chat']['id']
