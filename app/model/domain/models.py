@@ -38,3 +38,8 @@ class EventModel:
             'networkLevel': self.network_level,
             'createdAt': self.created_at,
         }
+
+
+@dataclass
+class DeviceModel:
+    pass

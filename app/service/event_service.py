@@ -2,7 +2,7 @@ import logging
 import uuid
 
 from app.firebase.firebase_client import FireBaseClient
-from app.model.domain.event_model import EventModel
+from app.model.domain.models import EventModel
 from app.model.event.power_state_update import PowerStateUpdateEvent
 from app.redis.redis_client import RedisClient
 
