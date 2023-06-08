@@ -17,14 +17,11 @@ async def create_state_event(request: Request):
     json = await request.json()
     print(json)
 
-    if 'text' not in json:
-        raise HTTPException(status_code=400, detail="text not found")
-
-    if 'chat' not in json:
-        raise HTTPException(status_code=400, detail="chat not found")
-
     user_id = json['text'].split(' ')[1]
     chat_id = json['chat']['id']
+
+    print(user_id)
+    print(chat_id)
 
     notification_service.save_chat_settings(user_id, chat_id)
     notification_service.send_telegram_message(chat_id, 'Сповіщення для телеграму налаштовано! U+2705')
