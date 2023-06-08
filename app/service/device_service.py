@@ -24,7 +24,7 @@ class DeviceService:
         snapshot = query.get()
 
         for device in snapshot:
-            print(device)
+            print(device.to_dict())
 
         return True
 
