@@ -12,3 +12,9 @@ class RedisClient:
 
     def set(self, key: str, value: Any):
         return self.redis.set(key, value)
+
+    def hget(self, key: str) -> dict:
+        return self.redis.hgetall(key)
+
+    def hset(self, key: str, value: dict):
+        return self.redis.hset(key, mapping=value)

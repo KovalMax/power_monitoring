@@ -42,4 +42,10 @@ class EventModel:
 
 @dataclass
 class DeviceModel:
-    pass
+    id: str
+    active: bool
+    user_id: str
+    device_id: str
+
+    def to_dict(self):
+        return self.__dict__.copy()
