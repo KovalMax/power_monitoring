@@ -12,7 +12,8 @@ from app.service.device_service import DeviceService
 from app.service.event_service import EventService
 
 mq = RabbitmqBroker(url=environ.get("BROKER_HOST"))
-redis = redis.Redis(host=environ.get("REDIS_HOST"), port=environ.get("REDIS_PORT"), db=environ.get("REDIS_INDEX"))
+redis = redis.Redis(host=environ.get("REDIS_HOST"), port=environ.get("REDIS_PORT"), db=environ.get("REDIS_INDEX"),
+                    decode_responses=True)
 cred = credentials.Certificate(environ.get("FIREBASE_KEY"))
 default_app = firebase_admin.initialize_app(cred)
 firestore = firestore.client()
