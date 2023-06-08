@@ -15,6 +15,7 @@ notification_service = get_notification_service()
 @router.post("/telegram", status_code=status.HTTP_200_OK)
 async def create_state_event(request: Request):
     json = await request.json()
+    print(json)
 
     if 'text' not in json:
         raise HTTPException(status_code=400, detail="text not found")
