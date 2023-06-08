@@ -29,7 +29,8 @@ class DeviceService:
             device = DeviceModel(id=device.id,
                                  device_id=snapshot_dict[self.DEVICE_ID_FIELD],
                                  user_id=snapshot_dict['userId'],
-                                 active=int(snapshot_dict['active']))
+                                 active=int(snapshot_dict['active']),
+                                 device_name=snapshot_dict['deviceName'])
 
             self.redis_client.hset(cache_key, device.to_dict())
 

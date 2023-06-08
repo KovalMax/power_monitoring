@@ -32,4 +32,4 @@ def power_state_update(update_event: dict[str, str | float]):
     if model is None:
         return
 
-    notification_service.send_notification(model)
+    notification_service.send_notification(model, device)
