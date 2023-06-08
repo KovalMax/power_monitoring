@@ -25,7 +25,7 @@ def power_state_update(update_event: dict[str, str | float]):
         return
 
     device = device_service.device_exists(event_model.device_id)
-    if device is None:
+    if device is None or not bool(device.active):
         return
 
     model = event_service.create_new_event(device.id, event_model)
