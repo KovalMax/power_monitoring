@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, Request
 from starlette import status
 
 router = APIRouter(
@@ -11,8 +11,8 @@ router = APIRouter(
 
 
 @router.post("/telegram", status_code=status.HTTP_201_CREATED)
-async def create_state_event(req, user_agent: Annotated[str | None, Header()] = None):
-    print(req)
+async def create_state_event(request: Request, user_agent: Annotated[str | None, Header()] = None):
+    print(request.body())
     print(user_agent)
 
     return {}
