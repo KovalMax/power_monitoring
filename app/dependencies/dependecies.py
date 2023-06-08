@@ -10,6 +10,7 @@ from app.firebase.firebase_client import FireBaseClient
 from app.redis.redis_client import RedisClient
 from app.service.device_service import DeviceService
 from app.service.event_service import EventService
+from app.service.notification_service import NotificationService
 
 mq = RabbitmqBroker(url=environ.get("BROKER_HOST"))
 redis = redis.Redis(host=environ.get("REDIS_HOST"), port=environ.get("REDIS_PORT"), db=environ.get("REDIS_INDEX"),
@@ -38,3 +39,7 @@ def get_event_service() -> EventService:
 
 def get_device_service() -> DeviceService:
     return DeviceService(get_redis_client(), get_firebase_client())
+
+
+def get_notification_service() -> NotificationService:
+    return NotificationService(get_redis_client(), get_firebase_client())

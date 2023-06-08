@@ -10,13 +10,12 @@ from app.redis.redis_client import RedisClient
 class EventService:
     DEVICE_COLLECTION = 'Devices'
     EVENT_COLLECTION = 'events'
-    POWER_STATE_CACHE_PREFIX = 'events:state'
 
     def __init__(self, redis_client: RedisClient, firebase_client: FireBaseClient):
         self.redis_client = redis_client
         self.firebase_client = firebase_client
 
-    def create_new_event(self, device_reference: str, event: PowerStateUpdateEvent) -> None:
+    def create_new_event(self, device_reference: str, event: PowerStateUpdateEvent) -> EventModel | None:
         try:
             model = EventModel(device_id=event.device_id,
                                power_state=event.power_state,
@@ -27,16 +26,7 @@ class EventService:
             device = self.firebase_client.client.collection(self.DEVICE_COLLECTION).document(device_reference)
             device.collection(self.EVENT_COLLECTION).add(model.to_dict(), str(uuid.uuid4()))
 
-            state_key = self.__get_key(model.device_id)
-            state_entry = self.redis_client.get(state_key)
-            if state_entry is None:
-                self.redis_client.set(state_key, model.power_state.value)
-                return
-
-            if int(state_entry) != model.power_state.value:
-                pass
+            return model
         except ValueError as e:
             logging.exception(str(e))
-
-    def __get_key(self, key_value: str) -> str:
-        return f'{self.POWER_STATE_CACHE_PREFIX}:{key_value}'
+            return None
