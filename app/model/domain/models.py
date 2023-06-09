@@ -46,7 +46,8 @@ class DeviceModel:
     active: int
     user_id: str
     device_id: str
-    device_name: str
+    name: str
+    location: str
 
     def to_dict(self):
         return self.__dict__.copy()

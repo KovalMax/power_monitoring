@@ -37,10 +37,10 @@ class NotificationService:
 
             if model.power_state is PowerStateEnum.POWER_ON:
                 self.send_telegram_message(
-                    settings['chatId'], f'Зміна стана світла! {device.device_name} - Cвітло зʼявилось')
+                    settings['chatId'], f'Зміна стана світла! {device.name}({device.location}) - Cвітло зʼявилось')
             else:
                 self.send_telegram_message(
-                    settings['chatId'], f'Зміна стана світла! {device.device_name} - Cвітла немає')
+                    settings['chatId'], f'Зміна стана світла! {device.name}({device.location}) - Cвітло пропало')
 
     def save_chat_settings(self, user_id: str, chat_id: str):
         snapshot = self.firebase_client.client.collection(self.SETTINGS_COLLECTION).document(user_id)
