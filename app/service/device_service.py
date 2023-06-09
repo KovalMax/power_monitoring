@@ -17,8 +17,8 @@ class DeviceService:
     def device_exists(self, device_id: str) -> DeviceModel | None:
         cache_key = self.__get_key(device_id)
         redis_entry = self.redis_client.hget(cache_key)
-        if len(redis_entry) > 0:
-            return DeviceModel(**redis_entry)
+        #if len(redis_entry) > 0:
+         #   return DeviceModel(**redis_entry)
 
         device_filter = FieldFilter(self.DEVICE_ID_FIELD, '==', device_id)
         query = self.firebase_client.client.collection(self.COLLECTION_NAME).where(filter=device_filter).limit(1)
